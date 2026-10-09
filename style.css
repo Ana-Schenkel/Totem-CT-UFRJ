@@ -215,7 +215,7 @@ button.big span { font-size: 3.5cqw; font-weight: 500; opacity: .85; }
 .hint { text-align: center; font-size: 3.1cqw; opacity: .75; margin-top: 1.5cqw; }
 
 .page {
-  position: absolute; inset: 0; display: none; flex-direction: column; padding: 20cqw 20cqw 16cqw;
+  position: absolute; inset: 0; display: none; flex-direction: column; padding: 5cqw 5cqw 4cqw;
   background: linear-gradient(170deg, var(--blue2), var(--blue) 55%, #170542);
   overflow-y: auto; gap: 3cqw; scrollbar-width: none; isolation: isolate;
 }
