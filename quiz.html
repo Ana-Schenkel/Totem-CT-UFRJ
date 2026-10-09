@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Totem quiz – qual curso combina com você</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Manrope:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<main class="frame" aria-label="Totem quiz de cursos">
+  <div class="blobs" aria-hidden="true"><span class="x1"></span><span class="x2"></span><span class="x3"></span></div>
+
+  <section class="screen on" id="s-intro">
+    <span class="pill">Centro de Tecnologia · UFRJ</span>
+    <h1>Ainda não sabe qual curso é a sua cara?</h1>
+    <p>Responda 6 perguntas rápidas e a gente sugere os cursos do CT que mais combinam com você.</p>
+    <button class="big" id="start">Começar</button>
+    <button class="big" id="exit">Sair</button>
+  </section>
+
+  <section class="screen" id="s-quiz">
+    <div class="qhead"><button class="pill" id="home">← Início</button><div class="dots" id="dots"></div></div>
+    <div class="qtext" id="qtext"></div>
+    <div class="opts" id="opts"></div>
+  </section>
+
+  <section class="screen" id="s-result">
+    <div class="qhead"><button class="pill" id="home2">← Início</button></div>
+    <div class="rtitle">Hipóteses pra você explorar</div>
+    <p class="rsub">A partir do seu padrão de respostas, esses cursos têm mais a ver com você. Não é um veredito — é um ponto de partida.</p>
+    <p class="rsub" id="ramb"></p>
+    <div id="matches"></div>
+    <button class="big" id="togo" style="width:100%;text-align:center;margin-top:1cqw">Conheça os cursos!</button>
+    <div class="deepen small"><div class="qr" aria-label="QR code de exemplo"><i>QR</i></div><p>Quer pensar mais sobre isso depois? Escaneie pra um teste mais completo, que pode te ajudar a refletir sobre suas escolhas.</p></div>
+    <button class="again" id="again">Refazer o quiz</button>
+    <button class="again" id="exit2">Sair do quiz</button>
+  </section>
+</main>
+
+<script>
+var esc={poli:"Escola Politécnica",quim:"Escola de Química",nano:"Interunidades"};
+var Q=[
+["Numa sexta à noite, você prefere estar…",[["🔧","Montando ou consertando alguma coisa","robotica"],["🧩","Resolvendo um puzzle ou jogo de estratégia","codigo"],["🌿","Ao ar livre, cuidando de planta ou bicho","natureza"],["🍳","Testando uma receita nova","saude"]]],
+["Se pudesse resolver um problema do mundo, escolheria…",[["🏠","Falta de moradia e infraestrutura","construcao"],["🌎","Poluição e mudanças climáticas","natureza"],["💊","Doenças sem cura","saude"],["🔦","Falta de acesso à energia","explorar"]]],
+["No trabalho em grupo, você costuma ser quem…",[["🗂️","Organiza tarefas e prazos","numeros"],["💻","Monta a parte técnica","codigo"],["🔩","Testa e ajusta até funcionar","robotica"],["📚","Pesquisa e aprofunda o assunto","lab"]]],
+["Qual tipo de filme ou série te prende mais?",[["🚀","Ficção científica no espaço","explorar"],["🔍","Investigação com ciência","lab"],["🌱","Documentário de natureza","natureza"],["🖥️","Muita tecnologia e hackers","codigo"]]],
+["Você se imagina, no futuro, trabalhando…",[["🏗️","Numa fábrica ou canteiro de obras","construcao"],["🧪","Num laboratório","lab"],["🏢","Numa empresa de tecnologia","codigo"],["🌊","Numa plataforma no meio do oceano","explorar"]]],
+["O que te dá mais satisfação?",[["⚙️","Ver algo que você construiu funcionar","robotica"],["❤️","Ajudar pessoas a se sentirem melhor","saude"],["📊","Deixar tudo organizado e eficiente","numeros"],["🔬","Entender por que as coisas funcionam","lab"]]],
+["Você prefere problemas que têm…",[["🎯","Uma resposta certa e objetiva","amb_obj"],["🌀","Várias soluções possíveis, em aberto","amb_aberto"]]],
+["No dia a dia, você rende mais…",[["🧑‍🤝‍🧑","Trabalhando em equipe","amb_equipe"],["🧑","Trabalhando sozinho(a), com foco","amb_sozinho"]]]
+];
+var C=[
+["Ambiental","poli","🌱","natureza","lab","Você quer resolver problemas ambientais com ciência e tecnologia."],
+["Civil","poli","🏗️","construcao","numeros","Você curte ver um projeto de infraestrutura sair do papel."],
+["de Computação e Informação","poli","💻","codigo","robotica","Você pensa em lógica, sistemas e resolver problemas com código."],
+["de Controle e Automação","poli","🤖","robotica","codigo","Você curte máquinas que pensam e agem sozinhas."],
+["de Materiais","poli","🧱","lab","explorar","Você quer entender do que as coisas são feitas e como melhorá-las."],
+["de Petróleo","poli","🛢️","explorar","numeros","Você se atrai por grandes projetos e ambientes desafiadores."],
+["de Produção","poli","📊","numeros","codigo","Você gosta de organizar pessoas, dados e processos."],
+["Elétrica","poli","⚡","codigo","explorar","Energia, eletrônica e tecnologia numa formação ampla."],
+["Eletrônica e de Computação","poli","🖥️","codigo","robotica","Você fica entre eletrônica, computação e IA."],
+["Mecânica","poli","⚙️","robotica","construcao","Você quer entender e construir máquinas e motores."],
+["Metalúrgica","poli","🔥","lab","construcao","Você se interessa por como metais são produzidos e transformados."],
+["Naval e Oceânica","poli","🚢","explorar","construcao","Navios, oceano e grandes estruturas te atraem."],
+["Nuclear","poli","☢️","explorar","numeros","Ciência de ponta e energia nuclear despertam sua curiosidade."],
+["Química","quim","🧪","lab","numeros","Você gosta de química, mas pensando grande, em escala industrial."],
+["de Alimentos","quim","🍫","saude","lab","Comida, química e biologia juntas te interessam."],
+["de Bioprocessos","quim","🧬","saude","lab","Biologia, química e biotecnologia acendem sua curiosidade."],
+["Industrial","quim","⚗️","lab","saude","Você curte química de verdade, laboratório e análise."],
+["Nanotecnologia","nano","🔬","lab","explorar","Você não quer ficar preso a uma área só — física, química e biologia juntas."]
+];
+var col={poli:"var(--poli)",quim:"var(--quim)",nano:"var(--nano)"};
+var $=function(i){return document.getElementById(i)};
+var qi=0,scores={};
+function showScreen(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on')});$(id).classList.add('on')}
+function startQuiz(){qi=0;scores={};showScreen('s-quiz');renderQ()}
+function renderQ(){
+  var d=$('dots');d.innerHTML="";
+  Q.forEach(function(_,i){var x=document.createElement('span');x.className='dot'+(i<=qi?' on':'');d.appendChild(x)});
+  $('qtext').textContent=Q[qi][0];
+  var o=$('opts');o.innerHTML="";
+  Q[qi][1].forEach(function(opt){
+    var b=document.createElement('button');b.className='opt';
+    b.innerHTML='<span class="ico">'+opt[0]+'</span><span>'+opt[1]+'</span>';
+    b.onclick=function(){scores[opt[2]]=(scores[opt[2]]||0)+1;qi++;if(qi<Q.length){renderQ()}else{renderResult()}};
+    o.appendChild(b);
+  });
+}
+function renderResult(){
+  var ranked=C.map(function(c){
+    var s=(scores[c[3]]||0)*2+(scores[c[4]]||0)*1;
+    return {c:c,s:s};
+  }).sort(function(a,b){return b.s-a.s}).slice(0,5);
+  var ambBits=[];
+  if(scores.amb_equipe)ambBits.push("rende mais em equipe");
+  if(scores.amb_sozinho)ambBits.push("rende mais sozinho(a), com foco");
+  if(scores.amb_aberto)ambBits.push("prefere problemas em aberto");
+  if(scores.amb_obj)ambBits.push("prefere problemas com resposta objetiva");
+  $('ramb').textContent=ambBits.length?"Você também disse que "+ambBits.join(" e ")+" — isso pode pesar na hora de escolher entre as opções.":"";
+  var box=$('matches');box.innerHTML="";
+  ranked.forEach(function(r){
+    var c=r.c;var d=document.createElement('div');d.className='match';d.style.setProperty('--c',col[c[1]]);
+    var nome=c[1]==="Interunidades"||c[0]==="Nanotecnologia"?c[0]:(c[1]==="quim"?"":"Engenharia ")+c[0].replace(/^de /,"de ");
+    d.innerHTML='<span class="em">'+c[2]+'</span><div><small>'+esc[c[1]]+'</small><b>'+nome+'</b><p></p></div>';
+    d.querySelector('p').textContent=c[5];
+    box.appendChild(d);
+  });
+  showScreen('s-result');
+}
+$('start').onclick=startQuiz;
+$('home').onclick=$('home2').onclick=function(){showScreen('s-intro')};
+$('exit').onclick = $('exit2').onclick = function() {
+    window.location.href = "index.html";
+};
+$('togo').onclick = function() {
+    window.location.href = "cursos.html";
+};
+$('again').onclick=startQuiz;
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Totem de cursos do CT</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Manrope:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="frame" aria-label="Tela inicial do totem">
+  <div class="blobs" aria-hidden="true"><span class="x1"></span><span class="x2"></span><span class="x3"></span></div>
+  <div class="top"><div class="logo">CT</div><span>Centro de Tecnologia · UFRJ</span></div>
+
+  <section class="hero">
+    <h1 id="q" aria-live="polite">Quer saber o que um engenheiro faz o dia inteiro?</h1>
+    <p class="sub">Descubra os cursos do CT em poucos toques.</p>
+  </section>
+
+  <div class="bubbles" aria-hidden="true">
+    <span class="b p" style="left:3%;top:6%">Prédios e pontes</span>
+    <span class="b q" style="left:52%;top:0%">Medicamentos</span>
+    <span class="b p" style="left:30%;top:30%">Robôs</span>
+    <span class="b q" style="left:2%;top:54%">Alimentos</span>
+    <span class="b p" style="left:46%;top:56%">Navios e plataformas</span>
+    <span class="b q" style="left:22%;top:80%">Energia limpa</span>
+  </div>
+
+  <div class="cta">
+    <button class="big one" data-go="Grade de cursos"><b>Ver os cursos</b><span>Já sei o que quero conhecer</span></button>
+    <button class="big two" data-go="Quiz"><b>Ainda estou descobrindo</b><span>Faça o quiz no totem ao lado</span></button>
+  </div>
+
+  <div class="legend"><span><i style="background:var(--poli)"></i>Escola Politécnica</span><span><i style="background:var(--quim)"></i>Escola de Química</span></div>
+
+  <!-- <div class="sheet" id="sheet" role="dialog" aria-modal="true">
+    <h2 id="st"></h2>
+    <p id="sp"></p>
+    <button id="close">Voltar à tela inicial</button>
+  </div> -->
+</main>
+
+<script>
+var qs=["Quem inventa o que ainda não existe?","De onde vem o remédio que você tomou hoje?","Curte resolver problema? Tem curso pra isso.","18 cursos. Um deles pode ser o seu.","Engenharia não é só matemática. Sério.","Já imaginou construir o que só existe em filme?"];
+var i=0,h=document.getElementById('q');
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
+  setInterval(function(){h.classList.add('out');setTimeout(function(){i=(i+1)%qs.length;h.textContent=qs[i];h.classList.remove('out')},500)},4500);
+}
+
+// var info={"Grade de cursos":["Próxima tela: grade de cursos","Cards de todos os cursos do CT, com etiqueta de cor da escola e filtro Todos / Poli / Química no topo."],
+// "Quiz":["Vá ao totem do quiz","Aqui a tela mostraria um QR code e a indicação de onde fica o outro totem. Ou uma versão curta por interesses."]};
+// var s=document.getElementById('sheet');
+
+// document.querySelectorAll('[data-go]').forEach(function(b){b.onclick=function(){var d=info[b.dataset.go];document.getElementById('st').textContent=d[0];document.getElementById('sp').textContent=d[1];s.classList.add('on')}});
+
+// document.getElementById('cursos').onclick= window.location.href = "cursos.html";
+// document.getElementById('quiz').onclick= window.location.href = "quiz.html";
+
+// document.getElementById('close').onclick=function(){s.classList.remove('on')};
+
+document.querySelectorAll('[data-go]').forEach(function(b) {
+    b.onclick = function() {
+        if (b.dataset.go === "Grade de cursos") {
+            window.location.href = "cursos.html";
+        } 
+        else if (b.dataset.go === "Quiz") {
+            window.location.href = "quiz.html";
+        }
+    };
+});
+</script>
+</body>
+</html>

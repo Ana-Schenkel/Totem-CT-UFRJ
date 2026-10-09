@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Totem de cursos do CT</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Manrope:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="frame" aria-label="Totem de cursos">
+  <div class="blobs" aria-hidden="true"><span class="x1"></span><span class="x2"></span><span class="x3"></span></div>
+  <div class="row"><button class="pill" id="home">← Início</button></div>
+  <h1>Qual curso você quer conhecer?</h1>
+  <div class="chips" role="group" aria-label="Filtrar por escola">
+    <button class="chip" data-f="all" aria-pressed="true">Todos</button>
+    <button class="chip" data-f="poli" aria-pressed="false">Poli</button>
+    <button class="chip" data-f="quim" aria-pressed="false">Química</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="hint">Deslize para ver mais cursos</div>
+
+  <section class="page" id="page">
+    <div class="blobs" aria-hidden="true"><span class="x1"></span><span class="x2"></span><span class="x3"></span></div>
+    <div class="row"><button class="pill" id="back">← Cursos</button><button class="pill" id="home2">Início</button></div>
+    <div class="tit"><span class="em" id="em"></span><div><small id="sch"></small><h2 id="nm"></h2></div></div>
+    <img id="imgCurso" class="img-curso" alt="Imagem ilustrativa do curso">
+    <div class="facts" id="facts"></div>
+    <div class="hook"><b>Se você curte…</b><ul id="gosta"></ul></div>
+    <div class="sec"><b>O que você vai estudar</b><div class="tags" id="estuda"></div></div>
+    <div class="sec"><b>Onde você pode trabalhar</b><div class="tags" id="atua"></div></div>
+    <div class="sec" id="secDesafios" style="display:none"><b>Desafios do setor</b><div class="tags" id="desafios"></div></div>
+    <div class="sec" id="secPerfil" style="display:none"><b>Perfil profissional</b><p id="perfil" style="margin:0;font-size:3.5cqw;line-height:1.4;opacity:.9"></p></div>
+    <div class="note" id="nota"></div>
+
+    <div class="footer-stack">  
+      <!-- 1º QR Code: Matérias do Curso (Já existia) -->
+      <div class="foot">
+        <div class="scan">
+          <b>Quer ver as matérias do curso?</b>
+          <p>Aponte a câmera do celular para o QR code ao lado →</p>
+          <small id="scanSub"></small>
+        </div>
+        <div class="qrbox">
+          <img id="qrimg" alt="QR code para ver as matérias dos cursos">
+          <span id="qrcap"></span>
+        </div>
+      </div>
+      <!-- 2º QR Code: Notas de Corte do SiSU (Novo) -->
+      <div class="foot">
+        <div class="scan">
+          <b>Quer ver as notas de corte?</b>
+          <p>Escaneie para ver a chamada regular do último SiSU no site da PR1 →</p>
+          <small>Acesso ao portal oficial da UFRJ</small>
+        </div>
+        <div class="qrbox">
+          <!-- O id qrSisu será usado no JavaScript para injetar a imagem -->
+          <img id="qrSisu" alt="QR code para notas de corte do SiSU">
+          <span>SiSU PR1</span>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+
+</main>
+
+<script>
+var S=function(x){return x.split('|')};
+var C=[
+["Ambiental","Engenharia","poli","🌱","10 períodos (5 anos)","","Meio ambiente|Sustentabilidade|Química + biologia|Resolver problemas ambientais com tecnologia","Água e esgoto|Resíduos|Poluição|Energia|Legislação ambiental|Gestão ambiental","Tratamento de água e esgoto|Gestão de resíduos|Consultoria ambiental|Licenciamento|Energia, mineração e indústria|Órgãos públicos|Pesquisa","Parceria da Politécnica com a COPPE e a Escola de Química.","Mudanças climáticas e escassez de recursos hídricos|Gestão de resíduos|Poluição dos recursos|Desenvolvimento sustentável","",""],
+["Civil","Engenharia","poli","🏗️","10 períodos (5 anos)","","Prédios, pontes e estradas|Ver um projeto sair do papel|Física e matemática|Obras e infraestrutura","Estruturas|Concreto e aço|Geotecnia|Hidráulica|Estradas e transportes|Planejamento de obras","Construtoras|Escritórios de engenharia|Obras públicas|Saneamento|Fiscalização de obras","Cinco ênfases: Construção Civil, Transportes, Estruturas, Geotecnia e Recursos Hídricos.","Gestão de projetos complexos|Segurança no trabalho|Avanço tecnológico|Sustentabilidade e impacto ambiental","",""],
+["de Computação e Informação","Engenharia","poli","💻","10 períodos","","Programação|Lógica e matemática|Criar aplicativos e sistemas|IA e dados","Programação|Algoritmos|Bancos de dados|Redes|Engenharia de software|Sistemas digitais","Desenvolvimento de software|Empresas de tecnologia|Bancos e fintechs|Dados|Infraestrutura de TI|Empreendedorismo","Tecnologia digital aplicada à Computação e a Sistemas de Informação.","Big data|Segurança cibernética|Atualização e manutenção de sistemas|Inteligência artificial (IA)","",""],
+["de Controle e Automação","Engenharia","poli","🤖","10 períodos","","Robôs e máquinas|Programação|Eletrônica|Fazer uma máquina agir sozinha","Matemática|Física|Programação|Eletrônica|Mecânica|Automação","Robótica|Indústria 4.0|Petróleo e gás|Automobilística|Siderurgia e mineração|Automação predial|Engenharia biomédica","Aplicações da robótica à indústria 4.0, da automação residencial à saúde.","Manutenção preditiva|Desenvolvimento de robótica|Infraestrutura tecnológica|Desenvolvimento sustentável","",""],
+["de Materiais","Engenharia","poli","🧱","10 períodos","","Química + física|Laboratório|Descobrir por que um material quebra ou enferruja|Inovação","Metais|Cerâmicas|Polímeros|Compósitos|Corrosão|Biomateriais","Indústria|Pesquisa|Desenvolvimento de produtos|Controle de qualidade|Aeronáutica|Petróleo","Do que as coisas são feitas e como fazê-las melhores.","Desenvolvimento de novos materiais|Integração de IA e manufatura avançada|Reduzir impactos ambientais na produção|Equilibrar inovação e viabilidade econômica","",""],
+["de Petróleo","Engenharia","poli","🛢️","10 períodos","","Geologia|Física e matemática|Energia|Grandes projetos|Ambiente offshore","Reservatórios|Perfuração|Produção","Exploração|Perfuração|Produção|Óleo e gás|Consultoria|Setor offshore","Exploração e produção de petróleo e gás.","Sustentabilidade e redução do impacto ambiental|Declínio de reservas e volatilidade do mercado|Transição energética|Perfuração em condições extremas","",""],
+["de Produção","Engenharia","poli","📊","10 períodos","","Matemática + negócios|Organização e estratégia|Resolver problemas|Liderança","Gestão|Logística|Qualidade|Estatística|Otimização|Gestão de projetos","Consultoria|Bancos|Indústria|Logística|Mercado financeiro|Empreendedorismo","Como organizar pessoas, recursos e processos para uma empresa funcionar melhor.","Sustentabilidade|Logística flexível|Automação industrial|Inteligência artificial (IA)","",""],
+["Elétrica","Engenharia","poli","⚡","10 períodos","","Eletricidade|Física e matemática|Entender como equipamentos funcionam|Uma formação ampla","Sistemas elétricos|Geração de energia|Transmissão e distribuição|Eletrônica|Telecomunicações|Automação","Empresas de energia|Indústria|Tecnologia|Telecomunicações|Projetos elétricos|Pesquisa","Uma área enorme, da energia às tecnologias digitais.","Segurança cibernética|Eficiência energética|Integração de tecnologias renováveis|Desenvolvimento sustentável","",""],
+["Eletrônica e de Computação","Engenharia","poli","🖥️","10 períodos","","Programação + eletrônica|Computadores por dentro|Robôs|IA|Circuitos","Circuitos|Microeletrônica|Instrumentação|Redes|Software|IA e machine learning","Hardware|Software|Semicondutores|Telecomunicações|Robótica|IA","Para quem fica entre eletrônica e computação.","Segurança cibernética|Consumo de recursos|Atualização e manutenção de sistemas|Big data","",""],
+["Mecânica","Engenharia","poli","⚙️","10 períodos","","Entender como máquinas funcionam|Carros e motores|Física|Construir e testar coisas","Máquinas e motores|Termodinâmica|Mecânica dos fluidos|Transferência de calor|Fabricação|Projeto mecânico","Indústria|Automobilística|Energia|Petróleo e gás|Manutenção|Robótica","Uma das engenharias mais tradicionais e abrangentes.","Motores mais eficientes e menos poluentes|Energias renováveis|Máquinas inteligentes e robôs industriais|Novas tecnologias (impressão 3D, nanotecnologia)","",""],
+["Metalúrgica","Engenharia","poli","🔥","10 períodos","","Química + física|Materiais|Processos industriais|Laboratório e indústria","Extração de metais|Produção e transformação|Ligas metálicas|Soldagem|Fundição","Siderurgia|Mineração|Indústria metalúrgica|Controle de qualidade|Pesquisa de materiais|Petróleo e gás","Como extrair, produzir, transformar e melhorar metais e ligas.","Ligas mais leves, resistentes e eficientes|Redução do impacto ambiental|Automação e indústria 4.0|Eficiência energética","",""],
+["Naval e Oceânica","Engenharia","poli","🚢","10 períodos","","Navios|Oceano|Petróleo offshore|Grandes estruturas|Projetos complexos","Projeto de navios|Estruturas marítimas|Sistemas navais|Engenharia oceânica","Navios|Plataformas offshore|Transporte marítimo|Portos|Óleo e gás offshore","Embarcações e estruturas no ambiente marítimo.","Sustentabilidade e redução do impacto ambiental|Adaptação a condições extremas|Exploração em águas profundas|Sistemas autônomos de navegação","",""],
+["Nuclear","Engenharia","poli","☢️","10 períodos","","Física e matemática|Energia|Ciência de ponta|Reatores e fenômenos nucleares","Energia e radiação nuclear|Segurança|Materiais|Processos","Energia nuclear|Instalações nucleares|Proteção radiológica|Aplicações médicas|Órgãos regulatórios|Pesquisa","Uma área bastante especializada.","Operação segura das tecnologias nucleares|Armazenamento e descarte de materiais radioativos|Exploração de tecnologias emergentes (fusão nuclear)","",""],
+["Química","Engenharia","quim","🧪","10 períodos (integral) · 12 (noturno)","Integral|Noturno","Química, matemática e física|Laboratório, mas também indústria|Transformar uma reação em processo industrial|Problemas complexos","Fenômenos de transporte|Termodinâmica|Operações unitárias|Modelagem|Projeto de processos","Indústria química|Petróleo e gás|Petroquímica|Farmacêutica|Alimentos|Cosméticos|Energia","Como transformar isso em um processo industrial enorme, eficiente e viável?","","","Capacidade de pesquisar, desenvolver, projetar e aperfeiçoar equipamentos, criar e utilizar modelos, planejar, coordenar e executar projetos."],
+["de Alimentos","Engenharia","quim","🍫","10 períodos · 4.033 h","Integral","Comida|Química e biologia|Criar novos alimentos|Indústria","Processamento e conservação|Microbiologia|Análise sensorial|Embalagens|Controle de qualidade","Indústria alimentícia|Desenvolvimento de produtos|Segurança dos alimentos|Bebidas|Alimentos funcionais|Embalagens","A grade inclui tecnologias de carnes, leite, frutas, cereais e bebidas.","","","Capacidade de criar e aperfeiçoar produtos e processos alimentícios e participar do projeto, direção ou fiscalização de instalações de produtos alimentícios."],
+["de Bioprocessos","Engenharia","quim","🧬","10 períodos","","Biologia e química|Genética e células|Microbiologia|Biotecnologia e medicamentos","Fermentação|Enzimas|Vacinas|Biocombustíveis|Processos com microrganismos","Farmacêutica|Biotecnologia|Alimentos|Cosméticos|Energia|Pesquisa","Para quem gosta de Engenharia Química, mas queria algo mais perto da biologia.","","","Capacidade de criar e aperfeiçoar produtos e processos biotecnológicos, com visão ética, humanística e atenta a aspectos sociais e ambientais."],
+["Industrial","Química","quim","⚗️","10 períodos (integral) · 12 (noturno)","Integral|Noturno","Química de verdade|Laboratório e experimentos|Descobrir a composição das coisas|Desenvolver produtos","Análises químicas|Controle de qualidade|Processos industriais|Desenvolvimento de produtos","Indústria química|Cosméticos|Farmacêutica|Alimentos|Petróleo|Materiais","O que é essa substância e como posso analisá-la ou desenvolvê-la?","","","Foco em pesquisa e desenvolvimento de processos e produtos químicos, controle de qualidade e meio ambiente."],
+["Nanotecnologia","Interunidades","nano","🔬","10 períodos (5 anos)","","Física + química + biologia|Ciência de ponta|Laboratório e pesquisa|Não querer ficar em uma área só","Nanomateriais|Técnicas de caracterização|Nanotecnologia na saúde|Dispositivos em escala nano","Novos materiais|Semicondutores|Energia|Nanomedicina|Farmacêutica|Sensores|Pesquisa","Curso interunidades: Politécnica, Física, Biofísica e Macromoléculas.","","",""]
+];
+var col={poli:"var(--poli)",quim:"var(--quim)",nano:"var(--nano)"},esc={poli:"Escola Politécnica",quim:"Escola de Química",nano:"Interunidades"};
+var schoolInfo={poli:"Desde 1792 · maior escola de engenharia do Brasil · ~5.100 alunos",quim:"Bloco E do CT · química, bioquímica e alimentos"};
+var $=function(i){return document.getElementById(i)};
+function fill(id,arr,cls){var e=$(id);e.innerHTML="";arr.forEach(function(t){var x=document.createElement(cls[0]);x.className=cls[1]||"";x.textContent=t;e.appendChild(x)})}
+function render(f){
+  var g=$('grid');g.innerHTML="";g.scrollTop=0;
+  ["poli","quim","nano"].forEach(function(s){
+    if(f!=="all"&&f!==s)return;
+    var h=document.createElement('div');h.className='h';h.textContent=esc[s];g.appendChild(h);
+    if(schoolInfo[s]){var si=document.createElement('div');si.className='hsub';si.textContent=schoolInfo[s];g.appendChild(si)}
+    C.forEach(function(c){if(c[2]!==s)return;
+      var b=document.createElement('button');b.className='card';b.style.setProperty('--c',col[s]);
+      var n=c[0].replace(/^de /,"");b.innerHTML="<small>"+c[1]+"</small><b>"+n+"</b>";
+      b.onclick=function(){show(c)};g.appendChild(b)});
+  });
+}
+function show(c){
+  var p=$('page');p.style.setProperty('--c',col[c[2]]);p.scrollTop=0;
+  $('em').textContent=c[3];$('sch').textContent=esc[c[2]];
+  $('nm').textContent=c[1]==="Interunidades"?c[0]:c[1]+" "+c[0];
+  $('imgCurso').src = "imagens/" + c[0] + ".png";
+  var factsArr=[c[4]].concat(c[5]?S(c[5]):[]);
+  if(c[11])factsArr.push(c[11]);
+  fill('facts',factsArr,['span','fact']);
+  fill('gosta',S(c[6]),['li']);fill('estuda',S(c[7]),['span','tag']);fill('atua',S(c[8]),['span','tag']);
+  if(c[10]){fill('desafios',S(c[10]),['span','tag']);$('secDesafios').style.display=''}else{$('secDesafios').style.display='none'}
+  if(c[12]){$('perfil').textContent=c[12];$('secPerfil').style.display=''}else{$('secPerfil').style.display='none'}
+  
+  $('qrSisu').src = "qr-pr1.png";
+  var q=QRS[c[2]];$('qrimg').src=QR[q[0]];$('qrcap').textContent=q[1];$('scanSub').textContent=q[2];$('nota').textContent=c[9];p.classList.add('on');
+}
+$('back').onclick=function(){$('page').classList.remove('on')};
+// $('home2').onclick=$('home').onclick=function(){$('page').classList.remove('on');document.querySelector('[data-f=all]').click()};
+
+// $('back').onclick = function() {
+//     window.location.href = "index.html";
+// };
+
+$('home2').onclick = $('home').onclick = function() {
+    window.location.href = "index.html";
+};
+
+var QR={poli:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAewAAAHsAQAAAAA4UaPNAAACsklEQVR42u2dMXIlIQxEW1vO4QZ7/2P5BnCC3kAgxHxn3kRTPYGLwbxEpZFbQmAjfvHMP/jVI1y4cOHChQsXLly48P+AWzwdmGYdAKzDOnzSzJ7LZDrhpfFGf/yNA9bBb/Nf+U/rz2UynfCC+FeMDEAbPjAfNBrAaZiGabyXyfLCq/v8edowgACnETCAs3N2O64u0wl/l88nb7c2fCDTCX+fz+fNKWvE7GtmBXl+LpPlhRf2+fmM5dZobVgb1ujC3tr4WCbLC6/q81f03hkrt87xmY8gL8sLL4yvOryZdZDkWFV6L1eS9IrlXZyX6YSX1/NersHs7uErjY1ovwYdu5gpywsvrG3cpdsw7E2o8PbIav0raLRdq5flhdf1eS/UPGP7HnOP8UxjZXnhlfGt2AFwgDzNBq7iOba8HzKd8Lo4Vv/MbqoJf/ZMlmNNnjH3SpJDlhdeWM9HO821ORUa/ieRL8sLL63nbbfZXH8FvP1gGk/eqh4z4W/QNqdDOKmXEPZRyTnyRtpGeHU9n/1/ILw9XiN1Xa/yeeEv8PmUwEZgR+PKYcmI8+nrkOWFl9U2I4XxpF6iaHMGOKel5PPCC+ewe1vKD0ZxNxIzdmDTVhS1Dyv8BdqmMcf5I3XadUgW0W8mPS+8eJzHPv26TwV2rMifWoh9o1ZxXvj79mE/9Pyl868sQJYXXrhuczUV7JnVdZBK9Pm7kM8LL1y3yTtTO8Jffv6Yl88Lrx/ncxjP+1C5gB8fgrSN8DfUbXiH8YEf9Yz0vPCX5bC5tSbnsMf/sxySzwt/B751u5nx2+wvSfLb4ivwu1tlOuE18Z/uMZuGNrBL9HF9JeL6SvXPC3+Fz4d24exx6JXp4krEqViZTvi76jaP7rLTUdxS0V56XnhV3PQ/1IQLFy5cuHDhwoULL4v/A6Mak8hy5YB1AAAAAElFTkSuQmCC",quim:"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbwAAAG8AQAAAACNyy1yAAACH0lEQVR42u2cMXLEIAxFvzLp8Q32/sfaG8AJlAIZZGebpJGL59kCvHqNRiO+BNhc/3rGl/75AAICAgICAgICAv4ZtPUcskMaMdMwO+4GeBWwEmw+H0kaJsn7+f5tdwO8ClgKppwpNbdDai5pvbwY4FXAB4DubofcXcM0bE5xDuADQTPzt2lYyIA1wDmAleD3TqdrMA6bQdt86oGbAV4FrAB1rZik5p9/ycDdveNVwJq8mnOmSz5sjz8kVbwKWJdXm19EaUqk8/20Ia8ClsdqhGKO2Dl1D5seARzWxCpgFTgX/WH2cu/aETtMucJq7AUA1muAWN97yrRSxG1KsGgAwPK8OqPRXh6nAsxyByB2B/AqYHUfQK1L8mFR9Z8DzS7rMJ2dAbwKWK8B2l73Y7mXcqmVzdAAgGWxmoOzpcFSsF3EKuAjNIBkrevcV/Vz6ff0l8bhe1MArwKWaYBZ8ufCP9qq9FcBH6YBpigNadrTVEm+0rMCfIhebX4vrFJJtSosYhXwIeesthjw6x5WsidWAatqq9zlt7T6W0z7HDteBawGL9dUm8f11WFLFfy6xoJXAYvA6zVVO87+6jrI2lMM41XAB5xdWY0ppX2Bu1hFrwI+DLRX5NW9b7VPBeBVwHrQe2iA6F/1ON06P8mCBgCs7QNcWgFTpjafm6pbBgxT64ZXAWv1ag7U8/3HKy3oVcAi0PhWMCAgICAgICAg4IPBH2RJ9z4BlsHGAAAAAElFTkSuQmCC"};
+var QRS={poli:['poli','Cursos da Poli','Você vai ver os cursos da Escola Politécnica.'],quim:['quim','Cursos da Química','Você vai ver os cursos da Escola de Química.'],nano:['poli','Cursos da Poli','Você vai ver os cursos da Escola Politécnica.']};
+document.querySelectorAll('.chip').forEach(function(b){b.onclick=function(){
+  document.querySelectorAll('.chip').forEach(function(x){x.setAttribute('aria-pressed',x===b)});render(b.dataset.f)}});
+render("all");
+</script>
+</body>
+</html>
