@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teste estendido — pensar melhor sobre suas escolhas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Manrope:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="wrap">
+  <div class="top"><div class="bar"><i id="prog" style="width:0%"></i></div></div>
+
+  <section class="step on" id="st-intro">
+    <h1>Um espaço pra pensar melhor sobre suas escolhas</h1>
+    <p class="lead">Isso não é um teste vocacional validado — é uma ferramenta de reflexão, inspirada em modelos usados na orientação de carreira (como o RIASEC). Ela cruza interesses, habilidades percebidas, valores e preferências de ambiente para te ajudar a explorar hipóteses, não pra te dar uma resposta pronta. Leva uns 5 a 8 minutos.</p>
+    <button class="btn primary" id="go" style="width:100%">Começar</button>
+  </section>
+
+  <section class="step" id="st-riasec">
+    <h2>Parte 1 · O que te atrai</h2>
+    <p class="lead">O quanto cada frase combina com você — de 1 (nada a ver) a 5 (muito a ver).</p>
+    <div id="riasecCards"></div>
+  </section>
+
+  <section class="step" id="st-skills">
+    <h2>Parte 2 · Onde você sente facilidade</h2>
+    <p class="lead">Gostar de algo não é o mesmo que ter facilidade nisso — por isso vale medir os dois separadamente.</p>
+    <div id="skillCards"></div>
+  </section>
+
+  <section class="step" id="st-values">
+    <h2>Parte 3 · O que importa pra você</h2>
+    <p class="lead">Escolha até 3 coisas que você mais valorizaria em um trabalho.</p>
+    <div class="chips" id="valueChips"></div>
+  </section>
+
+  <section class="step" id="st-env">
+    <h2>Parte 4 · Como você prefere trabalhar</h2>
+    <div id="envCards"></div>
+  </section>
+
+  <section class="step" id="st-open">
+    <h2>Parte 5 · Um pouco da sua história</h2>
+    <p class="lead">Opcional — não entra em nenhum cálculo, mas ajuda você a costurar os números com sua própria experiência.</p>
+    <div class="card"><p class="stmt">Que atividade te faz perder a noção do tempo?</p><textarea id="o1" placeholder="Escreva livremente..."></textarea></div>
+    <div class="card"><p class="stmt">Que tipo de problema as pessoas costumam te procurar pra resolver?</p><textarea id="o2" placeholder="Escreva livremente..."></textarea></div>
+    <div class="card"><p class="stmt">Que assunto despertou sua curiosidade sem ninguém pedir?</p><textarea id="o3" placeholder="Escreva livremente..."></textarea></div>
+  </section>
+
+  <section class="step" id="st-result">
+    <h1>Seu perfil</h1>
+    <p class="lead">Um retrato do seu padrão de respostas — não um veredito.</p>
+    <p class="stmt" style="opacity:.85">Interesses predominantes</p>
+    <div class="bars" id="barsInt"></div>
+    <p class="stmt" style="opacity:.85">Onde você sente mais facilidade</p>
+    <div class="bars" id="barsSkill"></div>
+    <div class="note" id="crossNote"></div>
+    <p class="stmt">O que você mais valoriza</p>
+    <div class="fam" id="valOut"></div>
+    <p class="stmt">Cursos que compartilham esse perfil no CT</p>
+    <p class="lead" style="margin-bottom:8px">A maioria da engenharia combina interesse investigativo e realista — por isso, em vez de apontar 1 ou 3 nomes, mostramos a família inteira. As pistas abaixo ajudam a diferenciar dentro dela.</p>
+    <div class="fam" id="famOut"></div>
+    <div class="note" id="diffNote"></div>
+    <div class="note">Próximo passo — teste da realidade: converse com quem já faz o curso, veja a matriz e o dia a dia real no totem de cursos, e experimente algo próximo (uma disciplina isolada, um vídeo de aula, uma visita) antes de decidir.</div>
+    <div class="note">Mais informações sobre os cursos do Centro de Tecnologia da UFRJ em <a href="https://poli.ufrj.br/ensino/graduacao/cursos/" target="_blank" rel="noopener noreferrer"> Cursos Escola Politécnica </a>  e  <a href="https://eq.ufrj.br/graduacao/" target="_blank" rel="noopener noreferrer"> Cursos Escola de Química </a>.</div>
+    <button class="btn ghost" id="restart" style="width:100%;margin-top:10px">Refazer</button>
+  </section>
+
+  <div class="nav" id="nav" style="display:none">
+    <button class="btn ghost" id="back">Voltar</button>
+    <button class="btn primary" id="next">Continuar</button>
+  </div>
+</div>
+
+<script>
+var RIASEC={
+ R:["Construir, montar ou consertar objetos","Trabalhar com ferramentas, máquinas ou equipamentos","Fazer atividades práticas, de mão na massa"],
+ I:["Descobrir por que um fenômeno acontece","Analisar dados até achar um padrão","Fazer experimentos ou testar hipóteses"],
+ A:["Criar algo original — imagem, texto, projeto, ideia","Ter liberdade pra fazer do seu próprio jeito","Experimentar formas diferentes de resolver algo"],
+ S:["Ensinar ou explicar algo pra alguém","Ajudar uma pessoa a resolver um problema dela","Trabalhar em colaboração o tempo todo"],
+ E:["Convencer outras pessoas de uma ideia","Liderar ou coordenar um grupo","Tomar decisões importantes e assumir riscos"],
+ C:["Organizar informações e manter tudo em ordem","Seguir procedimentos bem definidos","Trabalhar com registros, dados ou números"]
+};
+var SKILL={R:"Trabalhar com as mãos, construir ou consertar coisas",I:"Compreender conceitos abstratos e resolver problemas complexos",A:"Criar soluções ou ideias originais",S:"Explicar algo complicado pra alguém com clareza",E:"Convencer, negociar ou liderar um grupo",C:"Organizar informações e perceber detalhes"};
+var VALUES=["Estabilidade","Autonomia","Alta remuneração","Crescimento profissional","Criatividade","Impacto social","Reconhecimento","Equilíbrio vida pessoal","Contato com pessoas","Aprendizado contínuo"];
+var ENV=[["Você prefere problemas com…",["Uma resposta certa e objetiva","amb_obj"],["Várias soluções possíveis, em aberto","amb_aberto"]],
+ ["No dia a dia, você rende mais…",["Trabalhando em equipe","amb_equipe"],["Trabalhando sozinho(a), com foco","amb_sozinho"]],
+ ["Sua rotina ideal é…",["Relativamente previsível","amb_previsivel"],["Constantemente variável","amb_variavel"]],
+ ["Você prefere…",["Seguir um método já comprovado","amb_metodo"],["Inventar seu próprio jeito de fazer","amb_inventar"]]];
+var LETTERS={R:"Realista",I:"Investigativo",A:"Artístico",S:"Social",E:"Empreendedor",C:"Convencional"};
+var COURSES=[
+["Ambiental","poli","🌱","I","R"],["Civil","poli","🏗️","R","C"],["de Computação e Informação","poli","💻","I","R"],
+["de Controle e Automação","poli","🤖","R","I"],["de Materiais","poli","🧱","I","R"],["de Petróleo","poli","🛢️","R","I"],
+["de Produção","poli","📊","C","E"],["Elétrica","poli","⚡","R","I"],["Eletrônica e de Computação","poli","🖥️","I","R"],
+["Mecânica","poli","⚙️","R","I"],["Metalúrgica","poli","🔥","R","I"],["Naval e Oceânica","poli","🚢","R","I"],
+["Nuclear","poli","☢️","I","R"],["Química","quim","🧪","I","R"],["de Alimentos","quim","🍫","I","R"],
+["de Bioprocessos","quim","🧬","I","S"],["Industrial","quim","⚗️","I","R"],["Nanotecnologia","nano","🔬","I","A"]
+];
+var esc={poli:"Poli",quim:"Química",nano:"Interunidades"};
+
+var idx=0,steps=["st-intro","st-riasec","st-skills","st-values","st-env","st-open","st-result"];
+var ans={riasec:{},skill:{},values:[],env:{}};
+
+function buildLikert(container,items,group){
+  Object.keys(items).forEach(function(letter){
+    (Array.isArray(items[letter])?items[letter]:[items[letter]]).forEach(function(txt,i){
+      var key=letter+'_'+i;
+      var c=document.createElement('div');c.className='card';
+      c.innerHTML='<p class="stmt"></p><div class="likert"></div><div class="likert-labels"><span>nada a ver</span><span>muito a ver</span></div>';
+      c.querySelector('.stmt').textContent=txt;
+      var lk=c.querySelector('.likert');
+      for(var n=1;n<=5;n++){
+        (function(n){var b=document.createElement('button');b.textContent=n;
+          b.onclick=function(){ans[group][key]={letter:letter,val:n};lk.querySelectorAll('button').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel')};
+          lk.appendChild(b);
+        })(n);
+      }
+      container.appendChild(c);
+    });
+  });
+}
+buildLikert(document.getElementById('riasecCards'),RIASEC,'riasec');
+buildLikert(document.getElementById('skillCards'),SKILL,'skill');
+
+var vBox=document.getElementById('valueChips');
+VALUES.forEach(function(v){
+  var b=document.createElement('button');b.textContent=v;
+  b.onclick=function(){
+    var i=ans.values.indexOf(v);
+    if(i>-1){ans.values.splice(i,1);b.classList.remove('sel')}
+    else if(ans.values.length<3){ans.values.push(v);b.classList.add('sel')}
+  };
+  vBox.appendChild(b);
+});
+
+var eBox=document.getElementById('envCards');
+ENV.forEach(function(q,qi){
+  var c=document.createElement('div');c.className='card';
+  c.innerHTML='<p class="stmt"></p><div class="ab"></div>';
+  c.querySelector('.stmt').textContent=q[0];
+  var ab=c.querySelector('.ab');
+  [q[1],q[2]].forEach(function(opt){
+    var b=document.createElement('button');b.textContent=opt[0];
+    b.onclick=function(){ans.env['q'+qi]=opt[1];ab.querySelectorAll('button').forEach(function(x){x.classList.remove('sel')});b.classList.add('sel')};
+    ab.appendChild(b);
+  });
+  eBox.appendChild(c);
+});
+
+function goto(i){
+  idx=i;
+  steps.forEach(function(s,n){document.getElementById(s).classList.toggle('on',n===i)});
+  document.getElementById('prog').style.width=(i/(steps.length-1)*100)+'%';
+  document.getElementById('nav').style.display=(i>0&&i<steps.length-1)?'flex':'none';
+  document.getElementById('back').style.visibility=i>1?'visible':'hidden';
+  window.scrollTo(0,0);
+}
+document.getElementById('go').onclick=function(){goto(1)};
+document.getElementById('next').onclick=function(){if(idx<steps.length-2)goto(idx+1);else renderResult()};
+document.getElementById('back').onclick=function(){goto(Math.max(1,idx-1))};
+document.getElementById('restart').onclick=function(){ans={riasec:{},skill:{},values:[],env:{}};
+  document.querySelectorAll('.sel').forEach(function(x){x.classList.remove('sel')});goto(0)};
+
+function scoreGroup(group){
+  var sc={};Object.keys(LETTERS).forEach(function(l){sc[l]=0});
+  Object.values(ans[group]).forEach(function(a){sc[a.letter]+=a.val});
+  return sc;
+}
+function renderResult(){
+  var si=scoreGroup('riasec'),ss=scoreGroup('skill');
+  var maxI=Math.max.apply(null,Object.values(si))||1,maxS=Math.max.apply(null,Object.values(ss))||1;
+  var order=Object.keys(LETTERS).sort(function(a,b){return si[b]-si[a]});
+  var bi=document.getElementById('barsInt');bi.innerHTML="";
+  order.forEach(function(l){
+    var row=document.createElement('div');row.className='brow';
+    row.innerHTML='<span class="lb"></span><div class="track"><div class="fill"></div></div>';
+    row.querySelector('.lb').textContent=LETTERS[l];
+    row.querySelector('.fill').style.width=(si[l]/maxI*100)+'%';
+    bi.appendChild(row);
+  });
+  var bs=document.getElementById('barsSkill');bs.innerHTML="";
+  order.forEach(function(l){
+    var row=document.createElement('div');row.className='brow';
+    row.innerHTML='<span class="lb"></span><div class="track"><div class="fill"></div></div>';
+    row.querySelector('.lb').textContent=LETTERS[l];
+    row.querySelector('.fill').style.width=(ss[l]/maxS*100)+'%';
+    bs.appendChild(row);
+  });
+  var topI=order.slice(0,2),topS=Object.keys(LETTERS).sort(function(a,b){return ss[b]-ss[a]}).slice(0,2);
+  var cn=document.getElementById('crossNote');
+  if(topI[0]===topS[0]){cn.textContent="Seu maior interesse ("+LETTERS[topI[0]]+") também é onde você sente mais facilidade — um bom sinal de coerência.";}
+  else{cn.textContent="Seu maior interesse é "+LETTERS[topI[0]]+", mas você sente mais facilidade em "+LETTERS[topS[0]]+". Gostar e ter facilidade nem sempre andam juntos — vale explorar os dois antes de decidir.";}
+  var vo=document.getElementById('valOut');vo.innerHTML="";
+  (ans.values.length?ans.values:["Nenhum valor selecionado"]).forEach(function(v){var s=document.createElement('span');s.textContent=v;vo.appendChild(s)});
+  var fam=COURSES.filter(function(c){return topI.indexOf(c[3])>-1||topI.indexOf(c[4])>-1});
+  var fo=document.getElementById('famOut');fo.innerHTML="";
+  fam.forEach(function(c){var s=document.createElement('span');s.textContent=c[2]+' '+c[0].replace(/^de /,'')+' · '+esc[c[1]];fo.appendChild(s)});
+  var bits=[];
+  if(ans.env.q1==="amb_equipe")bits.push("cursos com mais gestão e trabalho em equipe, como Produção, podem te atrair mais");
+  if(ans.env.q1==="amb_sozinho")bits.push("cursos com mais trabalho individual de laboratório ou pesquisa, como Química, Materiais ou Nanotecnologia, podem combinar mais");
+  if(ans.env.q0==="amb_aberto")bits.push("cursos com problemas mais abertos, como Ambiental, Bioprocessos ou Produção, tendem a conversar mais com você");
+  if(ans.env.q0==="amb_obj")bits.push("cursos com respostas mais técnicas e objetivas, como Elétrica, Controle e Automação ou Civil, tendem a conversar mais com você");
+  var dn=document.getElementById('diffNote');
+  dn.textContent=bits.length?("Pistas pra diferenciar dentro da família: "+bits.join("; ")+"."):"Responda a Parte 4 pra receber pistas de como diferenciar dentro dessa família.";
+  goto(steps.length-1);
+}
+</script>
+</body>
+</html>
