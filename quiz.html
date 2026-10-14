@@ -34,7 +34,7 @@
     <div id="matches"></div>
     <button class="big" id="togo" style="width:100%;text-align:center;margin-top:1cqw">Conheça os cursos!</button>
     <div class="deepen small">
-      <img id="qr-quiz" src="qr-quiz.png" alt="QR code para acessar o teste completo" class="qr">
+      <img src="qr-quiz.png" alt="QR code para acessar o teste completo" class="qr">
       <p>Quer pensar mais sobre isso depois? Escaneie pra um teste mais completo, que pode te ajudar a refletir sobre suas escolhas.</p>
     </div>
     <button class="again" id="again">Refazer o quiz</button>
@@ -116,9 +116,6 @@ $('start').onclick=startQuiz;
 $('home').onclick=$('home2').onclick=function(){showScreen('s-intro')};
 $('exit').onclick = $('exit2').onclick = function() {
     window.location.href = "index.html";
-};
-$('qr-quiz').onclick = function() {
-    window.location.href = "quiz_maior/quiz_maior.html";
 };
 $('togo').onclick = function() {
     window.location.href = "cursos.html";
