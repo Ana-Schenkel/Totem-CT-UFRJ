@@ -16,6 +16,7 @@
     <button class="chip" data-f="all" aria-pressed="true">Todos</button>
     <button class="chip" data-f="poli" aria-pressed="false">Poli</button>
     <button class="chip" data-f="quim" aria-pressed="false">Química</button>
+    <button class="chip" data-f="nano" aria-pressed="false">IMA</button>
   </div>
   <div class="grid" id="grid"></div>
   <div class="hint">Deslize para ver mais cursos</div>
@@ -91,16 +92,60 @@ var col={poli:"var(--poli)",quim:"var(--quim)",nano:"var(--nano)"},esc={poli:"Es
 var schoolInfo={poli:"Desde 1792 · maior escola de engenharia do Brasil · ~5.100 alunos",quim:"Bloco E do CT · química, bioquímica e alimentos"};
 var $=function(i){return document.getElementById(i)};
 function fill(id,arr,cls){var e=$(id);e.innerHTML="";arr.forEach(function(t){var x=document.createElement(cls[0]);x.className=cls[1]||"";x.textContent=t;e.appendChild(x)})}
+
 function render(f){
-  var g=$('grid');g.innerHTML="";g.scrollTop=0;
-  ["poli","quim","nano"].forEach(function(s){
-    if(f!=="all"&&f!==s)return;
-    var h=document.createElement('div');h.className='h';h.textContent=esc[s];g.appendChild(h);
-    if(schoolInfo[s]){var si=document.createElement('div');si.className='hsub';si.textContent=schoolInfo[s];g.appendChild(si)}
-    C.forEach(function(c){if(c[2]!==s)return;
-      var b=document.createElement('button');b.className='card';b.style.setProperty('--c',col[s]);
-      var n=c[0].replace(/^de /,"");b.innerHTML="<small>"+c[1]+"</small><b>"+n+"</b>";
-      b.onclick=function(){show(c)};g.appendChild(b)});
+  var g = $('grid');
+  g.innerHTML = "";
+  g.scrollTop = 0;
+
+  // Opção "Todos"
+  if(f === "all"){
+    var cursos = C.slice().sort(function(a, b){
+      var nomeA = a[0].replace(/^de /, "");
+      var nomeB = b[0].replace(/^de /, "");
+      return nomeA.localeCompare(nomeB, "pt-BR", { sensitivity: "base" });
+    });
+    
+    cursos.forEach(function(c){
+      var s = c[2];
+      var b = document.createElement('button');
+      b.className = 'card';
+      b.style.setProperty('--c', col[s]);
+      var n = c[0].replace(/^de /, "");
+      b.innerHTML = "<small>" + c[1] + "</small><b>" + n + "</b>";
+      b.onclick = function(){
+        show(c);
+      };
+      g.appendChild(b);
+    });
+    return;
+  }
+  // Escola específica
+  ["poli", "quim", "nano"].forEach(function(s){
+    if(f !== s) return;
+
+    var h = document.createElement('div');
+    h.className = 'h';
+    h.textContent = esc[s];
+    g.appendChild(h);
+
+    if(schoolInfo[s]){
+      var si = document.createElement('div');
+      si.className = 'hsub';
+      si.textContent = schoolInfo[s];
+      g.appendChild(si);
+    }
+
+    C.forEach(function(c){
+      if(c[2] !== s) return;
+      var b = document.createElement('button');
+      b.className = 'card';
+      b.style.setProperty('--c', col[s]);
+      var n = c[0].replace(/^de /, "");
+      b.innerHTML = "<small>" + c[1] + "</small><b>" + n + "</b>";
+      b.onclick = function(){show(c);};
+      g.appendChild(b);
+    });
   });
 }
 function show(c){
@@ -119,11 +164,6 @@ function show(c){
   var q=QRS[c[2]];$('qrimg').src=QR[q[0]];$('qrcap').textContent=q[1];$('scanSub').textContent=q[2];$('nota').textContent=c[9];p.classList.add('on');
 }
 $('back').onclick=function(){$('page').classList.remove('on')};
-// $('home2').onclick=$('home').onclick=function(){$('page').classList.remove('on');document.querySelector('[data-f=all]').click()};
-
-// $('back').onclick = function() {
-//     window.location.href = "index.html";
-// };
 
 $('home2').onclick = $('home').onclick = function() {
     window.location.href = "index.html";
