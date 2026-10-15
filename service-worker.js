@@ -10,6 +10,7 @@ const urlsToCache = [
   './qr-poli.png',
   './qr-pr1.png',
   './qr-quiz.png',
+  './qr-ima.png',
   './imagens/Ambiental.jpg',
   './imagens/Civil.jpg',
   './imagens/de Alimentos.jpg',
