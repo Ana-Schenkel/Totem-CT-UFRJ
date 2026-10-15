@@ -2,7 +2,7 @@
   "name": "Totem CT UFRJ",
   "short_name": "Totem CT",
   "start_url": "./index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "icons": [
