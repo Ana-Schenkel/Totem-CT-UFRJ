@@ -105,7 +105,7 @@ function render(f){
       var nomeB = b[0].replace(/^de /, "");
       return nomeA.localeCompare(nomeB, "pt-BR", { sensitivity: "base" });
     });
-    
+
     cursos.forEach(function(c){
       var s = c[2];
       var b = document.createElement('button');
@@ -152,7 +152,7 @@ function show(c){
   var p=$('page');p.style.setProperty('--c',col[c[2]]);p.scrollTop=0;
   $('em').textContent=c[3];$('sch').textContent=esc[c[2]];
   $('nm').textContent=c[1]==="Interunidades"?c[0]:c[1]+" "+c[0];
-  $('imgCurso').src = "imagens/" + c[0] + ".png";
+  $('imgCurso').src = "imagens/" + c[0] + ".jpg";
   var factsArr=[c[4]].concat(c[5]?S(c[5]):[]);
   if(c[11])factsArr.push(c[11]);
   fill('facts',factsArr,['span','fact']);
