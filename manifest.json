@@ -1,0 +1,15 @@
+{
+  "name": "Totem CT UFRJ",
+  "short_name": "Totem CT",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "qr-quiz.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
