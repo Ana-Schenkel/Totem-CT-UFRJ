@@ -113,7 +113,7 @@ function renderResult(){
   var box=$('matches');box.innerHTML="";
   ranked.forEach(function(r){
     var c=r.c;var d=document.createElement('div');d.className='match';d.style.setProperty('--c',col[c[1]]);
-    var nome=c[1]==="Interunidades"||c[0]==="Nanotecnologia"?c[0]:(c[1]==="quim"?"":"Engenharia ")+c[0].replace(/^de /,"de ");
+    var nome=c[1]==="Interunidades"||c[0]==="Nanotecnologia"?c[0]:( c[0] === "Química" || c[1]==="quim"?"":"Engenharia ")+c[0].replace(/^de /,"de ");
     d.innerHTML='<span class="em">'+c[2]+'</span><div><small>'+esc[c[1]]+'</small><b>'+nome+'</b><p></p></div>';
     d.querySelector('p').textContent=c[5];
     box.appendChild(d);
